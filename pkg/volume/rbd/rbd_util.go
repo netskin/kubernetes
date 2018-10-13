@@ -588,7 +588,9 @@ func (util *RBDUtil) CreateImage(p *rbdVolumeProvisioner) (r *v1.RBDPersistentVo
 		// If no image features is provided, it results in empty string
 		// which disable all RBD image format 2 features as expected.
 		features := strings.Join(p.rbdMounter.imageFeatures, ",")
-		args = append(args, "--image-feature", features)
+		if features != "defaults" {
+			args = append(args, "--image-feature", features)
+		}
 	}
 	output, err = p.exec.Run("rbd", args...)
 
